@@ -15,7 +15,9 @@ def convert_video(file):
     frames = []
     while True:
         ret, frame = cap.read()
+        print("Converting video", end="\r")
         if not ret:
+            print("Done converting!")
             break
         frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         pil_image = Image.fromarray(frame_rgb)
@@ -51,12 +53,12 @@ def grayify(image):
 # convert pixels to a string of ascii characters
 def pixels_to_ascii(image):
     pixels = image.getdata()
-    characters = "".join([ASCII_CHARS_SHORT[pixel // 22] for pixel in pixels])
+    # characters = "".join([ASCII_CHARS_SHORT[pixel // 22] for pixel in pixels])
+    characters = "".join([ASCII_CHARS[pixel // 4] for pixel in pixels])
     return characters
 
 
-def image_to_ascii(image, new_width=75, contrast=0):
-    # convert image to ascii    
+def image_to_ascii(image, new_width=75, contrast=100):
     new_image_data = pixels_to_ascii(
         grayify(
             change_contrast(
@@ -87,7 +89,13 @@ if __name__ == "__main__":
     frames = convert_video(file)
 
     # convert all frames to ascii strings
-    movie = [image_to_ascii(frame, 100, 0) for frame in frames]
+    # movie = [image_to_ascii(frame, 100, 0) for frame in frames]
+    movie = []
+    i = 1
+    for frame in frames:
+        print(f"Converting image {i} of {len(frames)}", end="\r")
+        movie.append(image_to_ascii(frame, 200, 0))
+        i += 1
 
     # play ascii animation
     for ascii_frame in movie:
