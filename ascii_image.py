@@ -5,7 +5,6 @@ import os
 def resize_image(image, new_width=100):
     width, height = image.size
     ratio = height / (2.8 * width)
-    print(ratio)
     new_height = int(new_width * ratio)
     resized_image = image.resize((new_width, new_height))
     return(resized_image)
@@ -37,6 +36,7 @@ def main(new_width=100, contrast=100, simple=True):
     for file in os.listdir():
         if file.endswith(".jpg"):
             path = file
+            print(path)
     try:
         image = PIL.Image.open(path)
     except:
@@ -58,4 +58,4 @@ def main(new_width=100, contrast=100, simple=True):
         f.write(ascii_image)
  
 # run program
-main(200, 300, False)
+main(200, 150, True)
